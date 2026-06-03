@@ -432,46 +432,6 @@ function searchCars() {
   });
 }
 
-let wishlist = [];
-
-
-
-     function openSearch() {
-  document.getElementById("searchModal").classList.remove("hidden");
-
-  document.getElementById("searchCarsGrid").innerHTML =
-    cars.map(car => `
-      <div class="bg-white rounded-xl shadow overflow-hidden">
-        <img src="${car.img}" class="w-full h-48 object-cover">
-        <div class="p-3">
-          <h3 class="font-bold">${car.name}</h3>
-          <p class="text-red-600">${car.price}</p>
-        </div>
-      </div>
-    `).join('');
-}
-
-function closeSearch() {
-  document.getElementById("searchModal").classList.add("hidden");
-}
-
-function filterCars() {
-  let value =
-  document.getElementById("modalSearch").value.toLowerCase();
-
-  document.getElementById("searchCarsGrid").innerHTML =
-    cars
-    .filter(car => car.name.toLowerCase().includes(value))
-    .map(car => `
-      <div class="bg-white rounded-xl shadow overflow-hidden">
-        <img src="${car.img}" class="w-full h-48 object-cover">
-        <div class="p-3">
-          <h3 class="font-bold">${car.name}</h3>
-          <p class="text-red-600">${car.price}</p>
-        </div>
-      </div>
-    `).join('');
-}
 
 let wishlist = [];
 
