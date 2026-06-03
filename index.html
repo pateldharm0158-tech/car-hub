@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ELITECARZ - Premium Pre-Owned Cars</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+.hero-bg {
+  background:
+    linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+    url('car.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .hero-bg {
+    background-size: contain;
+    background-position: center bottom;
+    background-color: #000;
+  }
+}    .car-card { transition: all 0.4s ease; }
+    .car-card:hover { transform: translateY(-15px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+    .modal { animation: modalPop 0.4s ease; }
+    @keyframes modalPop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- Header -->
+  <header class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <div class="text-3xl font-bold">ELITECARZ</div>
+<div class="hidden md:flex gap-8 text-sm font-medium">        <a href="#" class="hover:text-red-600">Sell a Car</a>
+        <a href="#contact" class="hover:text-red-600">Contact us</a>
+      </div>
+  <div class="flex gap-5 text-xl items-center">
+
+  <i class="fa-solid fa-magnifying-glass cursor-pointer"
+     onclick="openSearch()"></i>
+
+  <i id="heartBtn"
+     class="fa-regular fa-heart cursor-pointer text-2xl"
+     onclick="toggleHeart()"></i>
+
+</div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+<section class="hero-bg min-h-screen flex items-center">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+
+        <h1 class="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6">
+            A Collection Built On Trust
+        </h1>
+
+        <p class="text-white text-xl md:text-2xl mb-10">
+            Handpicked Premium Pre-Owned Cars in Delhi NCR
+        </p>
+
+        <button onclick="document.getElementById('cars-section').scrollIntoView({behavior:'smooth'})"
+            class="bg-red-600 px-12 py-5 rounded-full text-xl font-semibold hover:bg-red-700">
+            View All Cars
+        </button>
+
+    </div>
+</section>
+
+  <!-- Cars Section -->
+  <section id="cars-section" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Featured Cars</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8" id="car-grid"></div>
+    </div>
+  </section>
+
+  <!-- Reviews, FAQ, Contact sections same as before -->
+   <!-- Customer Reviews -->
+  <section class="py-20 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">What Our Customers Say</h2>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-white p-8 rounded-3xl">
+          <img src="https://picsum.photos/id/64/80/80" class="w-16 h-16 rounded-full mb-4" alt="">
+          <p class="italic">"Best car buying experience. Transparent and professional."</p>
+          <div class="mt-6 font-semibold">Dalpat Raj Choudhary</div>
+        </div>
+        <div class="bg-white p-8 rounded-3xl">
+          <img src="https://picsum.photos/id/65/80/80" class="w-16 h-16 rounded-full mb-4" alt="">
+          <p class="italic">"Car was exactly as shown in photos. Highly recommended!"</p>
+          <div class="mt-6 font-semibold">Lalit Wadhwa</div>
+        </div>
+        <div class="bg-white p-8 rounded-3xl">
+          <img src="https://picsum.photos/id/66/80/80" class="w-16 h-16 rounded-full mb-4" alt="">
+          <p class="italic">"Smooth process and great after sales support."</p>
+          <div class="mt-6 font-semibold">Krishnendra Dwivedi</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+      <div class="space-y-6" id="faq-container"></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="bg-gray-900 text-white py-20">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-8">Get In Touch</h2>
+      <p class="text-2xl mb-8">+91 97111-63000</p>
+      <form onsubmit="handleForm(event)" class="max-w-md mx-auto space-y-6">
+        <input type="text" placeholder="Your Name" class="w-full p-4 rounded-2xl" required>
+        <input type="tel" placeholder="Phone Number" class="w-full p-4 rounded-2xl" required>
+        <button type="submit" class="w-full bg-red-600 py-5 rounded-2xl font-semibold">Send Message</button>
+      </form>
+    </div>
+  </section>
+  <!-- (Copy from previous code if needed) -->
+
+  <!-- CAR DETAIL MODAL -->
+  <div id="carModal" class="hidden fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4">
+    <div class="modal bg-white max-w-6xl w-full rounded-3xl max-h-[95vh] overflow-auto">
+      <div class="sticky top-0 bg-white border-b p-4 flex justify-between items-center z-10">
+        <h2 id="modal-car-name" class="text-2xl font-bold"></h2>
+        <button onclick="closeModal()" class="text-3xl">×</button>
+      </div>
+      
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 md:p-8">        <!-- Image Gallery -->
+        <div>
+          <img id="main-image" class="w-full rounded-2xl shadow" alt="">
+          <div class="grid grid-cols-4 gap-3 mt-4" id="thumbnail-grid"></div>
+        </div>
+
+        <!-- Details + EMI -->
+        <div>
+          <p id="modal-price" class="text-4xl font-bold text-red-600"></p>
+          
+          <div class="grid grid-cols-2 gap-4 mt-8 text-sm">
+            <div><strong>Year:</strong> <span id="modal-year"></span></div>
+            <div><strong>Kilometers:</strong> <span id="modal-km"></span></div>
+            <div><strong>Fuel:</strong> <span id="modal-fuel"></span></div>
+            <div><strong>Transmission:</strong> <span id="modal-trans"></span></div>
+          </div>
+
+          <!-- Fixed EMI Calculator -->
+          <div class="mt-10 bg-gray-50 p-6 rounded-3xl">
+            <h3 class="font-semibold mb-6 text-lg">EMI Calculator</h3>
+            
+            <div class="space-y-8">
+              <!-- Car Price -->
+              <div class="text-center bg-white py-3 rounded-2xl">
+                <p class="text-sm text-gray-600">Car Price</p>
+                <p id="car-price-display" class="text-2xl font-bold text-red-600"></p>
+              </div>
+
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span>Down Payment (Min 20%)</span>
+                  <span id="down-payment-display" class="font-semibold">₹3,75,000</span>
+                </div>
+                <input type="range" id="down-payment" min="100000" max="1000000" value="375000" step="10000" 
+                     oninput="updateEMI('down')"  class="w-full accent-red-600">
+              </div>
+
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span>Loan Amount (Max 80%)</span>
+                  <span id="loan-amount-display" class="font-semibold">₹15,00,000</span>
+                </div>
+                <input type="range" id="loan-amount" min="500000" max="3000000" value="1500000" step="10000" 
+                       oninput="updateEMI('loan')" class="w-full accent-red-600">
+              </div>
+
+              <div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span>Loan Tenure</span>
+                  <span id="tenure-display" class="font-semibold">5 years</span>
+                </div>
+                <input type="range" id="tenure" min="1" max="7" value="5" step="1" 
+                       oninput="updateEMI()" class="w-full accent-red-600">
+              </div>
+
+              <div class="bg-white p-6 rounded-2xl text-center border">
+                <p class="text-sm text-gray-600">Monthly EMI</p>
+                <p id="monthly-emi" class="text-4xl font-bold text-red-600">₹33,177</p>
+              </div>
+
+              <div class="grid grid-cols-3 gap-4 text-center text-sm">
+                <div>
+                  <p class="text-gray-500">Principal</p>
+                  <p id="principal" class="font-semibold">₹15,00,000</p>
+                </div>
+                <div>
+                  <p class="text-gray-500">Total Interest</p>
+                  <p id="total-interest" class="font-semibold text-orange-600">₹4,90,649</p>
+                </div>
+                <div>
+                  <p class="text-gray-500">Total Payment</p>
+                  <p id="total-payment" class="font-semibold">₹19,90,649</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-10 space-y-4">
+            <button onclick="callNow()" class="w-full bg-red-600 text-white py-5 rounded-2xl font-semibold flex items-center justify-center gap-3">
+              <i class="fa-solid fa-phone"></i> Call Now - +91 97111-63000
+            </button>
+            <button onclick="bookNow()" class="w-full bg-black text-white py-5 rounded-2xl font-semibold">Book Now (100% Refundable)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    const cars = [
+      {
+        id: 1,
+        name: "2019 Land Rover Discovery Sport SE",
+        price: "₹18.75 Lakh",
+        numericPrice: 1875000,
+        img: "https://picsum.photos/id/180/800/500",
+        year: "2019",
+        km: "36,000 km",
+        fuel: "Diesel",
+        trans: "Automatic",
+        images: ["https://picsum.photos/id/180/800/500","https://picsum.photos/id/181/800/500","https://picsum.photos/id/182/800/500"]
+      },
+      {
+        id: 2,
+        name: "2024 KIA Seltos GTX Plus",
+        price: "₹16.75 Lakh",
+        numericPrice: 1675000,
+        img: "https://picsum.photos/id/1074/800/500",
+        year: "2024",
+        km: "8,500 km",
+        fuel: "Diesel",
+        trans: "Automatic",
+        images: ["https://picsum.photos/id/1074/800/500","https://picsum.photos/id/1075/800/500"]
+      },
+      {
+        id: 3,
+        name: "2022 Mercedes-Benz GLC 300",
+        price: "₹28.50 Lakh",
+        numericPrice: 2850000,
+        img: "https://picsum.photos/id/201/800/500",
+        year: "2022",
+        km: "22,000 km",
+        fuel: "Petrol",
+        trans: "Automatic",
+        images: ["https://picsum.photos/id/201/800/500"]
+      },
+      {
+        id: 4,
+        name: "2023 BMW X3 xDrive30d",
+        price: "₹32.50 Lakh",
+        numericPrice: 3250000,
+        img: "https://picsum.photos/id/251/800/500",
+        year: "2023",
+        km: "15,000 km",
+        fuel: "Diesel",
+        trans: "Automatic",
+        images: ["https://picsum.photos/id/251/800/500"]
+      }
+    ];
+
+    function renderCars() {
+      const grid = document.getElementById('car-grid');
+      grid.innerHTML = cars.map(car => `
+        <div onclick="openCarModal(${car.id})" class="car-card bg-white rounded-3xl overflow-hidden cursor-pointer">
+<img src="${car.img}" class="w-full h-48 sm:h-56 object-cover">          <div class="p-6">
+            <h3 class="font-bold text-lg">${car.name}</h3>
+            <p class="text-red-600 text-2xl font-semibold mt-2">${car.price}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let currentCar = null;
+
+    function openCarModal(id) {
+      currentCar = cars.find(c => c.id === id);
+      if (!currentCar) return;
+
+      document.getElementById('modal-car-name').textContent = currentCar.name;
+      document.getElementById('modal-price').textContent = currentCar.price;
+      document.getElementById('modal-year').textContent = currentCar.year;
+      document.getElementById('modal-km').textContent = currentCar.km;
+      document.getElementById('modal-fuel').textContent = currentCar.fuel;
+      document.getElementById('modal-trans').textContent = currentCar.trans;
+      document.getElementById('car-price-display').textContent = currentCar.price;
+
+      document.getElementById('main-image').src = currentCar.images[0];
+      const thumbGrid = document.getElementById('thumbnail-grid');
+      thumbGrid.innerHTML = currentCar.images.map(img => `
+        <img src="${img}" onclick="changeImage('${img}')" class="w-full h-20 object-cover rounded-xl cursor-pointer hover:ring-2 hover:ring-red-500">
+      `).join('');
+
+      document.getElementById('carModal').classList.remove('hidden');
+      
+      // Reset sliders based on car price
+      const price = currentCar.numericPrice;
+      const defaultDown = Math.round(price * 0.2);
+      const defaultLoan = price - defaultDown;
+
+      document.getElementById('down-payment').max = Math.round(price * 0.8);
+      document.getElementById('down-payment').value = defaultDown;
+      document.getElementById('loan-amount').max = price;
+      document.getElementById('loan-amount').value = defaultLoan;
+
+      updateEMI();
+    }
+
+    function changeImage(src) {
+      document.getElementById('main-image').src = src;
+    }
+
+    function closeModal() {
+      document.getElementById('carModal').classList.add('hidden');
+    }
+
+    // Fixed & Linked EMI Calculator
+    function updateEMI(type = '') {
+      let loanAmount = parseFloat(document.getElementById('loan-amount').value);
+      let downPayment = parseFloat(document.getElementById('down-payment').value);
+      const tenureYears = parseFloat(document.getElementById('tenure').value);
+      const carPrice = currentCar ? currentCar.numericPrice : 1875000;
+
+      // Link both sliders
+      if (type === 'down') {
+  loanAmount = carPrice - downPayment;
+  document.getElementById('loan-amount').value = loanAmount;
+}
+
+if (type === 'loan') {
+  downPayment = carPrice - loanAmount;
+  document.getElementById('down-payment').value = downPayment;
+}
+
+      const principal = loanAmount;
+      const annualRate = 9.0;
+      const monthlyRate = annualRate / 12 / 100;
+      const tenureMonths = tenureYears * 12;
+
+      let emi = 0;
+      if (monthlyRate > 0) {
+        emi = principal * monthlyRate * Math.pow(1 + monthlyRate, tenureMonths) / 
+              (Math.pow(1 + monthlyRate, tenureMonths) - 1);
+      }
+
+      const totalPayment = emi * tenureMonths;
+      const totalInterest = totalPayment - principal;
+
+      // Update displays
+      document.getElementById('loan-amount-display').textContent = '₹' + Math.round(loanAmount).toLocaleString('en-IN');
+      document.getElementById('down-payment-display').textContent = '₹' + Math.round(downPayment).toLocaleString('en-IN');
+      document.getElementById('tenure-display').textContent = tenureYears + ' years';
+      document.getElementById('monthly-emi').textContent = '₹' + Math.round(emi).toLocaleString('en-IN');
+      document.getElementById('principal').textContent = '₹' + Math.round(principal).toLocaleString('en-IN');
+      document.getElementById('total-interest').textContent = '₹' + Math.round(totalInterest).toLocaleString('en-IN');
+      document.getElementById('total-payment').textContent = '₹' + Math.round(totalPayment).toLocaleString('en-IN');
+    }
+
+    // Other functions (callNow, bookNow, handleForm, renderFAQ) remain same
+    function callNow() { window.location.href = "tel:+919711163000"; }
+    function bookNow() { alert("✅ Booking request received!"); }
+    function handleForm(e) { e.preventDefault(); alert("✅ Thank you!"); e.target.reset(); }
+
+    // FAQ
+    const faqs = [
+      {q: "How can I contact EliteCarz?", a: "Call us at +91 97111-63000 or WhatsApp anytime."},
+      {q: "Do cars come with warranty?", a: "Yes, all cars come with minimum 6 months warranty."},
+      {q: "Can I take a test drive?", a: "Yes, test drive is available at our showroom."},
+      {q: "Do you provide RC transfer?", a: "Yes, we handle complete documentation and RC transfer."},
+      {q: "What about financing options?", a: "We work with all major banks for easy EMI options."},
+      {q: "Can I sell my old car?", a: "Yes, we offer best price for your old car."}
+    ];
+
+    function renderFAQ() {
+      const container = document.getElementById('faq-container');
+      container.innerHTML = faqs.map(faq => `
+        <div class="border rounded-2xl p-6">
+          <div class="flex justify-between items-center cursor-pointer" onclick="this.nextElementSibling.classList.toggle('hidden')">
+            <h3 class="font-semibold">${faq.q}</h3>
+            <i class="fa-solid fa-chevron-down"></i>
+          </div>
+          <div class="hidden mt-4 text-gray-600">${faq.a}</div>
+        </div>
+      `).join('');
+    }
+function searchCars() {
+  const input = document.getElementById("searchInput").value.toLowerCase();
+
+  document.querySelectorAll(".car-card").forEach(card => {
+    const text = card.innerText.toLowerCase();
+
+    if (text.includes(input)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+}
+
+let wishlist = [];
+
+function toggleHeart() {
+  const heart = document.getElementById("heartBtn");
+
+  if (heart.classList.contains("fa-regular")) {
+    heart.classList.remove("fa-regular");
+    heart.classList.add("fa-solid");
+    heart.style.color = "red";
+
+    wishlist.push("liked");
+    alert("Added to Wishlist ❤️");
+
+  } else {
+    heart.classList.remove("fa-solid");
+    heart.classList.add("fa-regular");
+    heart.style.color = "black";
+
+    wishlist.pop();
+    alert("Removed from Wishlist");
+  }
+}
+
+     function openSearch() {
+  document.getElementById("searchModal").classList.remove("hidden");
+
+  document.getElementById("searchCarsGrid").innerHTML =
+    cars.map(car => `
+      <div class="bg-white rounded-xl shadow overflow-hidden">
+        <img src="${car.img}" class="w-full h-48 object-cover">
+        <div class="p-3">
+          <h3 class="font-bold">${car.name}</h3>
+          <p class="text-red-600">${car.price}</p>
+        </div>
+      </div>
+    `).join('');
+}
+
+function closeSearch() {
+  document.getElementById("searchModal").classList.add("hidden");
+}
+
+function filterCars() {
+  let value =
+  document.getElementById("modalSearch").value.toLowerCase();
+
+  document.getElementById("searchCarsGrid").innerHTML =
+    cars
+    .filter(car => car.name.toLowerCase().includes(value))
+    .map(car => `
+      <div class="bg-white rounded-xl shadow overflow-hidden">
+        <img src="${car.img}" class="w-full h-48 object-cover">
+        <div class="p-3">
+          <h3 class="font-bold">${car.name}</h3>
+          <p class="text-red-600">${car.price}</p>
+        </div>
+      </div>
+    `).join('');
+}
+
+
+    
+
+    
+    window.onload = () => {
+      renderCars();
+      renderFAQ();
+    };
+  </script>
+  <div id="searchModal"
+class="hidden fixed inset-0 bg-white z-[9999] overflow-auto p-6">
+
+  <div class="flex justify-between items-center mb-6">
+    <input
+      type="text"
+      id="modalSearch"
+      placeholder="Search Cars..."
+      class="border w-full p-3 rounded-xl"
+      onkeyup="filterCars()">
+
+    <button onclick="closeSearch()"
+    class="ml-4 text-3xl">×</button>
+  </div>
+
+  <h2 class="text-3xl font-bold mb-6">Products</h2>
+
+  <div id="searchCarsGrid"
+       class="grid grid-cols-2 md:grid-cols-4 gap-6">
+  </div>
+
+</div>
+</body>
+</html>
